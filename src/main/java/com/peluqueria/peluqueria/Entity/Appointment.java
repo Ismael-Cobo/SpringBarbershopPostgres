@@ -16,9 +16,35 @@ public class Appointment implements Serializable {
     
     private Integer duracion;
     
+    @Column(length = 400)
+    private String description;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    
+    @ManyToOne
+    @JoinColumn(name = "hair_assistance_id")
+    private HairAssistance hairAssistance;
+    
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+    
+    public Employee getEmployee() {
+        return employee;
+    }
+    
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
+    public HairAssistance getHairAssistance() {
+        return hairAssistance;
+    }
+    
+    public void setHairAssistance(HairAssistance hairAssistance) {
+        this.hairAssistance = hairAssistance;
+    }
     
     public Appointment() {
     }
@@ -53,6 +79,14 @@ public class Appointment implements Serializable {
         this.duracion = duracion;
     }
     
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
     public Customer getCustomer() {
         return customer;
     }
@@ -60,6 +94,7 @@ public class Appointment implements Serializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+    
     
     @Override
     public String toString() {
