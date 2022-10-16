@@ -1,5 +1,7 @@
 package com.peluqueria.peluqueria.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ public class Appointment implements Serializable {
     
     @Column(length = 400)
     private String description;
+    
+    @JsonIgnoreProperties(value = {"appointments"})
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

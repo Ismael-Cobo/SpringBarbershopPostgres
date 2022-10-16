@@ -22,6 +22,8 @@ public interface AppointmentService {
     
     boolean deleteByID(Long id);
     
+    boolean deleteAll();
+    
     double calculateAppointmentsBenefitsByDate(LocalDate date);
     
     

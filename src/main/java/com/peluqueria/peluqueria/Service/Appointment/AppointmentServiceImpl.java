@@ -58,6 +58,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
     
     @Override
+    public boolean deleteAll() {
+        appointmetRepository.deleteAll();
+        return true;
+    }
+    
+    @Override
     public double calculateAppointmentsBenefitsByDate(LocalDate date) {
         if (date == null) return 0;
         
