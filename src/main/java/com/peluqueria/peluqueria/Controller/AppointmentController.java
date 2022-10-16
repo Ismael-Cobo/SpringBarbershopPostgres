@@ -55,7 +55,7 @@ public class AppointmentController {
         
         if (optionalAppointment.isEmpty()) return ResponseEntity.notFound().build();
         
-        return ResponseEntity.ok(appointmentService.save(optionalAppointment.get()));
+        return ResponseEntity.ok(appointmentService.save(appointment));
         
 //        return appointmentService.findByID(id)
 //                .map(appointment1 -> ResponseEntity.ok(appointmentService.save(optionalAppointment.get())))
