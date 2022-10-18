@@ -2,25 +2,39 @@ package com.peluqueria.peluqueria.Service.Appointment;
 
 import com.peluqueria.peluqueria.Entity.Appointment;
 import com.peluqueria.peluqueria.Repository.AppointmetRepository;
+import com.peluqueria.peluqueria.Repository.CustomerRepository;
+import com.peluqueria.peluqueria.Repository.EmployeeRepository;
+import com.peluqueria.peluqueria.Repository.HairAssistanceRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Year;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
+@Transactional
 public class AppointmentServiceImpl implements AppointmentService {
     
     private final AppointmetRepository appointmetRepository;
+    private final CustomerRepository customerRepository;
+    private final HairAssistanceRepository hairAssistanceRepository;
+    private final EmployeeRepository employeeRepository;
     
-    public AppointmentServiceImpl(AppointmetRepository appointmetRepository) {
+    public AppointmentServiceImpl(
+            AppointmetRepository appointmetRepository,
+            CustomerRepository customerRepository,
+            HairAssistanceRepository hairAssistanceRepository,
+            EmployeeRepository employeeRepository
+            ) {
         this.appointmetRepository = appointmetRepository;
+        this.customerRepository = customerRepository;
+        this.hairAssistanceRepository = hairAssistanceRepository;
+        this.employeeRepository = employeeRepository;
     }
     
     @Override
@@ -61,8 +75,35 @@ public class AppointmentServiceImpl implements AppointmentService {
     
     @Override
     public Appointment save(Appointment appointment) {
+        if (appointment == null || appointment.getDate() == null)
+            throw new IllegalArgumentException("Cita incorrecta");
+        
+        if(!customerRepository.existsById(appointment.getCustomer().getId()))
+            throw new IllegalArgumentException("El cliente no existe");
+    
+        if(!hairAssistanceRepository.existsById(appointment.getHairAssistance().getId()))
+            throw new IllegalArgumentException("El tipo de servicio no existe");
+    
+        if(!employeeRepository.existsById(appointment.getEmployee().getId()))
+            throw new IllegalArgumentException("El empleado no existe");
+        
+        Appointment appointment1 = appointmetRepository.save(appointment);
+        
+        appointment1.setCustomer(customerRepository.findById(appointment1.getCustomer().getId()).get());
+        appointment1.setHairAssistance(hairAssistanceRepository.findById(appointment1.getHairAssistance().getId()).get());
+        appointment1.setEmployee(employeeRepository.findById(appointment1.getEmployee().getId()).get());
+        return appointment;
+    }
+    
+    @Override
+    public Appointment saveAndReturn(Appointment appointment) {
         if (appointment == null) throw new IllegalArgumentException("Cita incorrecta");
-        return appointmetRepository.save(appointment);
+        Appointment appointmentSaved = appointmetRepository.save(appointment);
+    
+        Optional<Appointment> appointment1 = this.findByID(appointmentSaved.getId());
+        if (appointment1.isEmpty()) return appointmentSaved;
+        
+        return appointment1.get();
     }
     
     @Override
@@ -72,6 +113,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional<Appointment> optionalAppointment = appointmetRepository.findById(id);
         
         if (optionalAppointment.isEmpty()) return false;
+        
         
         appointmetRepository.delete(optionalAppointment.get());
         return true;

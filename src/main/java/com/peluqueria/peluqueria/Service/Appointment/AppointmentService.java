@@ -25,6 +25,8 @@ public interface AppointmentService {
     List<Appointment> findAllByPriceLessThanEqual(Double price);
     
     Appointment save(Appointment appointment);
+
+    Appointment saveAndReturn(Appointment appointment);
     
     boolean deleteByID(Long id);
     

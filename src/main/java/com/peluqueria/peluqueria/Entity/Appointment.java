@@ -1,12 +1,16 @@
 package com.peluqueria.peluqueria.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "Appointment")
 public class Appointment implements Serializable {
     
@@ -26,11 +30,11 @@ public class Appointment implements Serializable {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hair_assistance_id")
     private HairAssistance hairAssistance;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employee employee;
     

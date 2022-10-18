@@ -1,6 +1,8 @@
 package com.peluqueria.peluqueria.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -29,6 +31,7 @@ public class Customer implements Serializable {
     
     private String phone;
     
+    @JsonIgnoreProperties(value = {"customer"})
     @OneToMany(mappedBy = "customer")
     private List<Appointment> appointments = new ArrayList<>();
     

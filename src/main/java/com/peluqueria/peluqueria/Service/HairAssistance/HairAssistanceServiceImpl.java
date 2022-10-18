@@ -3,12 +3,13 @@ package com.peluqueria.peluqueria.Service.HairAssistance;
 import com.peluqueria.peluqueria.Entity.HairAssistance;
 import com.peluqueria.peluqueria.Repository.HairAssistanceRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service@Transactional
+
 public class HairAssistanceServiceImpl implements HairAssistanceService{
     
     private final HairAssistanceRepository hairAssistanceRepository;
