@@ -2,6 +2,8 @@ package com.peluqueria.peluqueria.Entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,7 +34,8 @@ public class Customer implements Serializable {
     private String phone;
     
     @JsonIgnoreProperties(value = {"customer"})
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Appointment> appointments = new ArrayList<>();
     
     
