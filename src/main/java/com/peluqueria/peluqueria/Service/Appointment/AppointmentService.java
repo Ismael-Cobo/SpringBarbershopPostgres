@@ -16,15 +16,23 @@ public interface AppointmentService {
     
     Optional<Appointment> findByID(Long id);
     
+    List<Appointment> findAllById(List<Long> ids);
+    
     List<Appointment> findAll();
     
     List<Appointment> findAllByCustomerEmail(String email) throws IllegalArgumentException;
     
     List<Appointment> findAllByEmployeeDni(String dni);
     
+    List<Appointment> findAllByCustomerId(Long id);
+    
     List<Appointment> findAllByPriceLessThanEqual(Double price);
     
+    List<Appointment> findAllByIdNotInAndCustomerId(List<Long> ids, Long id);
+    
     Appointment save(Appointment appointment);
+    
+    List<Appointment> saveAll (List<Appointment> appointments);
 
     Appointment saveAndReturn(Appointment appointment);
     

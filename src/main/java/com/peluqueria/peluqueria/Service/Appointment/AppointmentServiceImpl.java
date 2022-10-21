@@ -7,12 +7,14 @@ import com.peluqueria.peluqueria.Repository.EmployeeRepository;
 import com.peluqueria.peluqueria.Repository.HairAssistanceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +47,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
     
     @Override
+    public List<Appointment> findAllById(List<Long> ids) {
+        if(CollectionUtils.isEmpty(ids))
+            return new ArrayList<>();
+        return appointmetRepository.findAllById(ids);
+    }
+    
+    @Override
     public List<Appointment> findAll() {
         return appointmetRepository.findAll();
     }
@@ -66,11 +75,30 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
     
     @Override
+    public List<Appointment> findAllByCustomerId(Long id) {
+        if(id == null)
+            throw new IllegalArgumentException("El cliente no existe");
+        
+        return appointmetRepository.findAllByCustomerId(id);
+    }
+    
+    @Override
     public List<Appointment> findAllByPriceLessThanEqual(Double price) {
         if(price == null || price <= 0 )
             throw new IllegalArgumentException("El precio no es correcto");
         
         return appointmetRepository.findAllByHairAssistancePriceLessThanEqual(price);
+    }
+    
+    @Override
+    public List<Appointment> findAllByIdNotInAndCustomerId(List<Long> ids, Long id) {
+        if(id == null || id <= 0)
+            return new ArrayList<>();
+        
+        if(ids == null)
+            ids = new ArrayList<>();
+        
+        return appointmetRepository.findAllByIdNotInAndCustomerId(ids, id);
     }
     
     @Override
@@ -93,6 +121,13 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment1.setHairAssistance(hairAssistanceRepository.findById(appointment1.getHairAssistance().getId()).get());
         appointment1.setEmployee(employeeRepository.findById(appointment1.getEmployee().getId()).get());
         return appointment;
+    }
+    
+    @Override
+    public List<Appointment> saveAll(List<Appointment> appointments) {
+        if(CollectionUtils.isEmpty(appointments))
+            return new ArrayList<>();
+        return appointmetRepository.saveAll(appointments);
     }
     
     @Override

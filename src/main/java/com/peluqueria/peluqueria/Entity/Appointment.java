@@ -32,11 +32,11 @@ public class Appointment implements Serializable {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "hair_assistance_id")
     private HairAssistance hairAssistance;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
     

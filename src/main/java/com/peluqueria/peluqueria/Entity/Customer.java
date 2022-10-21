@@ -34,8 +34,7 @@ public class Customer implements Serializable {
     private String phone;
     
     @JsonIgnoreProperties(value = {"customer"})
-    @OneToMany(mappedBy = "customer", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "customer")
     private List<Appointment> appointments = new ArrayList<>();
     
     
