@@ -1,7 +1,9 @@
 package com.peluqueria.peluqueria.Service.HairAssistance;
 
+import com.peluqueria.peluqueria.Entity.Appointment;
 import com.peluqueria.peluqueria.Entity.HairAssistance;
 import com.peluqueria.peluqueria.Repository.HairAssistanceRepository;
+import com.peluqueria.peluqueria.Service.Appointment.AppointmentService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +16,14 @@ public class HairAssistanceServiceImpl implements HairAssistanceService{
     
     private final HairAssistanceRepository hairAssistanceRepository;
     
-    public HairAssistanceServiceImpl(HairAssistanceRepository hairAssistanceRepository) {
+    private final AppointmentService appointmentService;
+    
+    public HairAssistanceServiceImpl(
+            HairAssistanceRepository hairAssistanceRepository,
+            AppointmentService appointmentService
+            ) {
         this.hairAssistanceRepository = hairAssistanceRepository;
+        this.appointmentService = appointmentService;
     }
     
     @Override
@@ -42,7 +50,11 @@ public class HairAssistanceServiceImpl implements HairAssistanceService{
     public boolean deleteById(Long id) {
         if(!hairAssistanceRepository.existsById(id))
             return false;
-    
+        
+        List<Appointment> appointments = appointmentService.findAllByHairAssistanceId(id);
+        
+        appointments.forEach(a -> a.setHairAssistance(null));
+        
         hairAssistanceRepository.deleteById(id);
         return true;
     }

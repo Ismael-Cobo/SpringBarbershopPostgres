@@ -26,6 +26,8 @@ public interface AppointmentService {
     
     List<Appointment> findAllByCustomerId(Long id);
     
+    List<Appointment> findAllByHairAssistanceId(Long id);
+    
     List<Appointment> findAllByPriceLessThanEqual(Double price);
     
     List<Appointment> findAllByIdNotInAndCustomerId(List<Long> ids, Long id);

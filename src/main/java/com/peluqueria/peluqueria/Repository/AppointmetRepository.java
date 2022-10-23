@@ -12,6 +12,8 @@ public interface AppointmetRepository extends JpaRepository<Appointment, Long> {
     
     List<Appointment> findAllByCustomerId(Long id);
     
+    List<Appointment> findAllByHairAssistanceId(Long id);
+    
     List<Appointment> findAllByEmployeeDni(String dni);
     List<Appointment> findAllByDateBetween(LocalDateTime min, LocalDateTime max);
     

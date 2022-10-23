@@ -83,6 +83,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
     
     @Override
+    public List<Appointment> findAllByHairAssistanceId(Long id) {
+        if(id == null)
+            throw new IllegalArgumentException("El cliente no existe");
+        
+        return appointmetRepository.findAllByHairAssistanceId(id);
+    }
+    
+    @Override
     public List<Appointment> findAllByPriceLessThanEqual(Double price) {
         if(price == null || price <= 0 )
             throw new IllegalArgumentException("El precio no es correcto");
