@@ -30,6 +30,10 @@ public class Employee implements Serializable {
     
     private String dni;
     
+    @OneToOne
+    @JoinColumn(name = "direction_id", unique = true)
+    private Direction direction;
+    
     public Employee() {
     }
     
@@ -106,6 +110,14 @@ public class Employee implements Serializable {
     
     public void setDni(String dni) {
         this.dni = dni;
+    }
+    
+    public Direction getDirection() {
+        return direction;
+    }
+    
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
     
     @Override
